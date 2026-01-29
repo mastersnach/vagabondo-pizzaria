@@ -96,7 +96,7 @@
         }
 
         .ingredients {
-            color: #a8dadc;
+            color: #ffffff;
             font-style: italic;
             font-weight: 300;
         }
@@ -421,8 +421,11 @@
         </div>
         <button onclick="prepareForPrint()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded shadow-lg transition">Skriv ut / Spara som PDF</button>
         <button onclick="resetMenuData()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded shadow-lg transition ml-4 mt-2">Återställ meny</button>
+        <button onclick="exportMenuData()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow-lg transition ml-4 mt-2">Exportera meny</button>
+        <button onclick="importMenuData()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-lg transition ml-4 mt-2">Importera meny</button>
         <p class="text-sm mt-2 opacity-70">Tips: Välj "Liggande" (Landscape) i utskriftsinställningarna.</p>
         <p class="text-xs mt-1 opacity-50">💡 Klicka på menyobjekt för att redigera. Ändringar sparas automatiskt!</p>
+        <p class="text-xs mt-1 opacity-60">📁 Använd "Exportera meny" för att spara ändringar som filer som andra kan importera!</p>
     </div>
 
     <div id="brochure-container" class="brochure-container">
@@ -519,6 +522,9 @@
     <script>
         // Load menu data from localStorage or use default
         let menuData = JSON.parse(localStorage.getItem('pizzaMenuData')) || [
+
+            // Dina anpassade priser här - lägg till ändringar nedan
+            // Exempel: { id: 1, name: "Capricciosa", desc: "Tomatsås, ost, skinka, champinjoner", price: "NYTT_PRIS:-" },
             { id: 1, name: "Capricciosa", desc: "Tomatsås, ost, skinka, champinjoner", price: "105:-" },
             { id: 2, name: "Quattro Stagioni", desc: "Tomatsås, ost, skinka, champinjoner, kronärtskocka, räkor", price: "115:-" },
             { id: 3, name: "Marinara", desc: "Tomatsås, ost, räkor, musslor", price: "110:-" },
@@ -671,6 +677,76 @@
                     }
                 }
             });
+        }
+
+        // Function to export menu data
+        function exportMenuData() {
+            const exportData = {
+                menuData: menuData,
+                headingsData: headingsData,
+                h2Headings: JSON.parse(localStorage.getItem('h2Headings') || '{}'),
+                backPanelContent: JSON.parse(localStorage.getItem('backPanelContent') || '{}'),
+                timestamp: new Date().toISOString()
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'pizza-menu-data.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert('Menydata exporterad! Skicka filen till andra personer.');
+        }
+
+        // Function to import menu data
+        function importMenuData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const importData = JSON.parse(e.target.result);
+
+                            if (confirm('Vill du importera menydata? Detta kommer ersätta nuvarande data.')) {
+                                // Import menu data
+                                if (importData.menuData) {
+                                    localStorage.setItem('pizzaMenuData', JSON.stringify(importData.menuData));
+                                }
+
+                                // Import headings
+                                if (importData.headingsData) {
+                                    localStorage.setItem('headingsData', JSON.stringify(importData.headingsData));
+                                }
+
+                                // Import h2 headings
+                                if (importData.h2Headings) {
+                                    localStorage.setItem('h2Headings', JSON.stringify(importData.h2Headings));
+                                }
+
+                                // Import back panel content
+                                if (importData.backPanelContent) {
+                                    localStorage.setItem('backPanelContent', JSON.stringify(importData.backPanelContent));
+                                }
+
+                                alert('Menydata importerad! Ladda om sidan för att se ändringarna.');
+                                location.reload();
+                            }
+                        } catch (error) {
+                            alert('Fel: Ogiltig datafil. ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
         }
 
         // Function to reset menu data to original
