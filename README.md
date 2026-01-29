@@ -13,6 +13,10 @@ En interaktiv pizzameny för Vagabondo Pizzeria med möjlighet att redigera pris
 3. **Spara som PDF**: Tryck "Skriv ut / Spara som PDF" för att få en tryckbar version
 
 ### För personal (som vill ändra priser):
+- **Redigera priser**: Klicka på maträtter och ändra priser/namn/beskrivningar
+- **Lägg till nya rätter**: Använd "Lägg till ny rätt" i redigeringsmodalen
+- **Radera rätter**: Klicka på en rätt → "Radera rätt permanent" (går inte att ångra!)
+- **Återställ raderade**: Om du ångrar dig finns "Återställ raderade" knapp
 
 #### Arbetsflöde för att uppdatera priser:
 

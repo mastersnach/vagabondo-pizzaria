@@ -515,7 +515,8 @@
                 <button onclick="saveModalItem()" class="modal-btn save-btn">Spara</button>
                 <button onclick="addNewItem()" class="modal-btn add-btn">Lägg till ny rätt</button>
                 <button onclick="addNewHeading()" class="modal-btn heading-btn">Lägg till rubrik</button>
-                <button onclick="deleteItem()" class="modal-btn delete-btn" id="delete-btn" style="display: inline-block;">Radera rätt</button>
+                <button onclick="deleteItem()" class="modal-btn delete-btn" id="delete-btn" style="display: inline-block;">Radera rätt permanent</button>
+                <button onclick="restoreDeletedItems()" class="modal-btn" style="background-color: #28a745; color: white; display: none;" id="restore-btn">Återställ raderade</button>
                 <button onclick="closeModal()" class="modal-btn cancel-btn">Avbryt</button>
             </div>
         </div>
@@ -683,8 +684,10 @@
 
         // Function to export menu data
         function exportMenuData() {
+            // Only export non-deleted items
+            const activeMenuData = menuData.filter(item => !item.deleted);
             const exportData = {
-                menuData: menuData,
+                menuData: activeMenuData,
                 headingsData: headingsData,
                 h2Headings: JSON.parse(localStorage.getItem('h2Headings') || '{}'),
                 backPanelContent: JSON.parse(localStorage.getItem('backPanelContent') || '{}'),
@@ -827,7 +830,9 @@
             if (sallader) sallader.innerHTML = '';
 
             let pizzaCounter = 0;
-            menuData.forEach(item => {
+            // Filter out deleted items before rendering
+            const activeMenuData = menuData.filter(item => !item.deleted);
+            activeMenuData.forEach(item => {
                 console.log('Rendering item:', item.id, item.name);
                 const html = createItem(item);
                 if (item.id <= 21) {
@@ -897,6 +902,16 @@
 
             // Show delete button
             document.getElementById('delete-btn').style.display = 'inline-block';
+
+            // Show restore button if there are deleted items
+            const deletedCount = menuData.filter(item => item.deleted).length;
+            const restoreBtn = document.getElementById('restore-btn');
+            if (deletedCount > 0) {
+                restoreBtn.style.display = 'inline-block';
+                restoreBtn.textContent = `Återställ ${deletedCount} raderade`;
+            } else {
+                restoreBtn.style.display = 'none';
+            }
 
             // Show modal
             document.getElementById('edit-modal').style.display = 'flex';
@@ -1183,23 +1198,50 @@
             } else if (currentlyEditingId === null || isAddingNew) {
                 return;
             } else {
-                // Delete menu item
-                if (confirm('Är du säker på att du vill radera denna rätt?')) {
-                    // Remove the item
-                    menuData = menuData.filter(item => item.id !== currentlyEditingId);
+                // Delete menu item PERMANENTLY
+                if (confirm('Är du säker på att du vill radera denna rätt? Detta går inte att ångra!')) {
+                    // Mark item as deleted instead of removing it
+                    const itemIndex = menuData.findIndex(item => item.id === currentlyEditingId);
+                    if (itemIndex !== -1) {
+                        menuData[itemIndex].deleted = true; // Mark as deleted
+                        console.log('Marked item as deleted:', menuData[itemIndex]);
 
-                    // Reorder IDs to fill gaps
-                    menuData.forEach((item, index) => {
-                        item.id = index + 1;
-                    });
+                        // Save to localStorage (deleted items stay saved)
+                        saveMenuData();
 
-                    // Save to localStorage
-                    saveMenuData();
+                        // Re-render to hide deleted item
+                        render();
+
+                        // Success message
+                        alert('Rätten har raderats permanent!');
+                    }
 
                     // Close modal and re-render
                     closeModal();
                     render();
                 }
+            }
+        }
+
+        function restoreDeletedItems() {
+            const deletedItems = menuData.filter(item => item.deleted);
+            if (deletedItems.length === 0) {
+                alert('Inga raderade rätten att återställa.');
+                return;
+            }
+
+            if (confirm(`Vill du återställa ${deletedItems.length} raderade rätt(er)?`)) {
+                // Remove deleted flag from all deleted items
+                menuData.forEach(item => {
+                    if (item.deleted) {
+                        delete item.deleted;
+                    }
+                });
+
+                saveMenuData();
+                render();
+                alert('Raderade rätten har återställts!');
+                closeModal();
             }
         }
 
