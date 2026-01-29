@@ -645,7 +645,9 @@
         }
 
         function loadHeadings() {
-            headingsData.forEach(heading => {
+            // Filter out deleted headings
+            const activeHeadings = headingsData.filter(heading => !heading.deleted);
+            activeHeadings.forEach(heading => {
                 // Create h2 element with proper styling
                 const h2Element = document.createElement('h2');
                 h2Element.textContent = heading.text;
@@ -684,11 +686,12 @@
 
         // Function to export menu data
         function exportMenuData() {
-            // Only export non-deleted items
+            // Only export non-deleted items and headings
             const activeMenuData = menuData.filter(item => !item.deleted);
+            const activeHeadingsData = headingsData.filter(heading => !heading.deleted);
             const exportData = {
                 menuData: activeMenuData,
-                headingsData: headingsData,
+                headingsData: activeHeadingsData,
                 h2Headings: JSON.parse(localStorage.getItem('h2Headings') || '{}'),
                 backPanelContent: JSON.parse(localStorage.getItem('backPanelContent') || '{}'),
                 timestamp: new Date().toISOString()
@@ -903,12 +906,14 @@
             // Show delete button
             document.getElementById('delete-btn').style.display = 'inline-block';
 
-            // Show restore button if there are deleted items
-            const deletedCount = menuData.filter(item => item.deleted).length;
+            // Show restore button if there are deleted items or headings
+            const deletedItemsCount = menuData.filter(item => item.deleted).length;
+            const deletedHeadingsCount = headingsData.filter(heading => heading.deleted).length;
+            const totalDeleted = deletedItemsCount + deletedHeadingsCount;
             const restoreBtn = document.getElementById('restore-btn');
-            if (deletedCount > 0) {
+            if (totalDeleted > 0) {
                 restoreBtn.style.display = 'inline-block';
-                restoreBtn.textContent = `Återställ ${deletedCount} raderade`;
+                restoreBtn.textContent = `Återställ ${totalDeleted} raderade`;
             } else {
                 restoreBtn.style.display = 'none';
             }
@@ -1182,8 +1187,8 @@
 
         function deleteItem() {
             if (currentlyEditingHeading && currentlyEditingH2) {
-                // Delete heading
-                if (confirm('Är du säker på att du vill ta bort denna rubrik?')) {
+                // Delete heading PERMANENTLY
+                if (confirm('Är du säker på att du vill ta bort denna rubrik permanent? Detta går inte att ångra!')) {
                     const headingText = currentlyEditingH2.textContent;
                     deleteHeading(headingText);
                     currentlyEditingH2.remove();
@@ -1194,6 +1199,8 @@
 
                     // Close modal
                     document.getElementById('edit-modal').style.display = 'none';
+
+                    alert('Rubriken har raderats permanent!');
                 }
             } else if (currentlyEditingId === null || isAddingNew) {
                 return;
@@ -1225,12 +1232,19 @@
 
         function restoreDeletedItems() {
             const deletedItems = menuData.filter(item => item.deleted);
-            if (deletedItems.length === 0) {
-                alert('Inga raderade rätten att återställa.');
+            const deletedHeadings = headingsData.filter(heading => heading.deleted);
+            const totalDeleted = deletedItems.length + deletedHeadings.length;
+
+            if (totalDeleted === 0) {
+                alert('Inga raderade rätten eller rubriker att återställa.');
                 return;
             }
 
-            if (confirm(`Vill du återställa ${deletedItems.length} raderade rätt(er)?`)) {
+            let message = 'Vill du återställa:';
+            if (deletedItems.length > 0) message += `\n- ${deletedItems.length} raderade rätt(er)`;
+            if (deletedHeadings.length > 0) message += `\n- ${deletedHeadings.length} raderade rubrik(er)`;
+
+            if (confirm(message + '?')) {
                 // Remove deleted flag from all deleted items
                 menuData.forEach(item => {
                     if (item.deleted) {
@@ -1238,9 +1252,18 @@
                     }
                 });
 
+                // Remove deleted flag from all deleted headings
+                headingsData.forEach(heading => {
+                    if (heading.deleted) {
+                        delete heading.deleted;
+                    }
+                });
+
                 saveMenuData();
+                saveHeadingsData();
                 render();
-                alert('Raderade rätten har återställts!');
+                loadHeadings();
+                alert('Raderade rätten och rubriker har återställts!');
                 closeModal();
             }
         }
@@ -1289,8 +1312,12 @@
 
         // Handle heading deletion (when h2 is removed)
         function deleteHeading(headingText) {
-            headingsData = headingsData.filter(h => h.text !== headingText);
-            saveHeadingsData();
+            // Mark heading as deleted instead of removing it
+            const headingIndex = headingsData.findIndex(h => h.text === headingText);
+            if (headingIndex !== -1) {
+                headingsData[headingIndex].deleted = true;
+                saveHeadingsData();
+            }
         }
 
         // Handle h2 editing
