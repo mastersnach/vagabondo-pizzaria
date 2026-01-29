@@ -10,6 +10,7 @@ En interaktiv pizzameny för Vagabondo Pizzeria med möjlighet att redigera pris
 ### För kunder (som vill se menyn):
 1. Öppna live-länken ovan
 2. Bläddra genom pizzorna på framsidan och baksidan
+3. **Spara som PDF**: Tryck "Skriv ut / Spara som PDF" för att få en tryckbar version
 
 ### För personal (som vill ändra priser):
 
@@ -17,10 +18,11 @@ En interaktiv pizzameny för Vagabondo Pizzeria med möjlighet att redigera pris
 
 1. **Öppna menyn**: Gå till live-länken
 2. **Redigera priser**: Klicka på maträtter och ändra priser
-3. **Exportera ändringar**: Klicka "Exportera meny" - får en `.json`-fil
-4. **Skicka filen**: Maila eller dela `pizza-menu-data.json` till GitHub-ägaren
-5. **GitHub-ägaren importerar**: Öppnar menyn → "Importera meny" → väljer filen
-6. **Uppdatera online**: Push till GitHub så alla ser ändringarna
+3. **Alternativ 1 - Spara som PDF**: Tryck "Skriv ut / Spara som PDF" - får direkt en PDF med alla ändringar
+4. **Alternativ 2 - Exportera för delning**: Klicka "Exportera meny" - får en `.json`-fil
+5. **Skicka filen**: Maila eller dela `pizza-menu-data.json` till GitHub-ägaren
+6. **GitHub-ägaren importerar**: Öppnar menyn → "Importera meny" → väljer filen
+7. **Uppdatera online**: Push till GitHub så alla ser ändringarna
 
 ## 🔧 Tekniska detaljer
 
