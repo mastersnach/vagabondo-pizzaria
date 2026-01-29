@@ -835,6 +835,8 @@
             let pizzaCounter = 0;
             // Filter out deleted items before rendering
             const activeMenuData = menuData.filter(item => !item.deleted);
+            console.log('Rendering active items:', activeMenuData.length, 'of', menuData.length, 'total');
+            console.log('Deleted items not shown:', menuData.filter(item => item.deleted));
             activeMenuData.forEach(item => {
                 console.log('Rendering item:', item.id, item.name);
                 const html = createItem(item);
@@ -1212,9 +1214,14 @@
                     if (itemIndex !== -1) {
                         menuData[itemIndex].deleted = true; // Mark as deleted
                         console.log('Marked item as deleted:', menuData[itemIndex]);
+                        console.log('All menuData:', menuData);
 
                         // Save to localStorage (deleted items stay saved)
                         saveMenuData();
+
+                        // Verify localStorage was saved
+                        const savedData = JSON.parse(localStorage.getItem('pizzaMenuData'));
+                        console.log('Saved to localStorage:', savedData);
 
                         // Re-render to hide deleted item
                         render();
@@ -1421,6 +1428,8 @@
         }
 
         window.onload = function() {
+            console.log('Page loaded. Current menuData:', menuData);
+            console.log('Deleted items:', menuData.filter(item => item.deleted));
             render();
             loadH2Headings();
             loadBackPanelContent();
