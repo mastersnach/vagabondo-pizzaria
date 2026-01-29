@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzeria Meny - Broschyr</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #000000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .brochure-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            background: linear-gradient(135deg, #0f3016 0%, #102f17 50%, #141f16 100%);
+            border: 1px solid #ecb20659;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .brochure-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(236, 178, 6, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 178, 6, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .panel {
+            padding: 30px;
+            height: 100%;
+            min-height: 800px;
+            border-right: 1px dashed #ecb206;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel:last-child {
+            border-right: none;
+        }
+
+        h1, h2 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            color: #ecb206;
+            border-bottom: none;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            font-size: 1.7rem !important;
+            font-style: italic;
+            position: relative;
+            cursor: pointer;
+        }
+
+        h1:hover, h2:hover {
+            color: #ffd700;
+        }
+
+        h1::after, h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, #ecb20669 0%, #ecb20669 70%, rgba(236, 178, 6, 0.3) 85%, transparent 100%);
+        }
+
+        .menu-item {
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #f1faee;
+            font-size: 19px;
+        }
+
+        .ingredients {
+            color: #ffffff;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .price {
+            color: #ecb206;
+            white-space: nowrap;
+            margin-left: 10px;
+        }
+
+        .cover-panel {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-right: none !important;
+        }
+
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: #fff;
+            margin-bottom: 0;
+            border: none;
+        }
+
+        .cover-subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: #ecb206;
+        }
+
+        .rat-p {
+            padding-top: 15px;
+        }
+
+        .item-header    {
+                padding-bottom: 7px;
+            }
+
+            .item-he2    {
+                padding-bottom: 7px;
+            }
+
+        @media print {
+            body {
+                background: #1a1a1a;
+                padding: 0;
+                margin: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .brochure-container {
+                box-shadow: none;
+                border: 1px solid #ecb20659;
+                width: 297mm;
+                height: 210mm;
+                max-width: none;
+                margin: 0;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0;
+                background: linear-gradient(135deg, #0f3016 0%, #102f17 50%, #141f16 100%);
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .brochure-container::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background:
+                    radial-gradient(circle at 20% 20%, rgba(236, 178, 6, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(236, 178, 6, 0.02) 0%, transparent 50%);
+                pointer-events: none;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .panel {
+                border-color: #ecb206;
+                color: #fff;
+                background: linear-gradient(rgba(15, 48, 22, 0.8), rgba(16, 47, 23, 0.5));
+                padding: 15mm;
+                height: auto;
+                min-height: 180mm;
+                border-right: 1px dashed #ecb206;
+                page-break-inside: avoid;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .panel:last-child {
+                border-right: none;
+            }
+            .ingredients { color: #a8dadc; }
+            .item-header, .price { color: #f1faee; }
+            h1, h2 {
+                color: #ecb206;
+                border-color: #ecb206;
+                font-size: 18pt !important;
+                margin-bottom: 10pt;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .menu-item {
+                margin-bottom: 8pt;
+                font-size: 10pt;
+                line-height: 1.3;
+            }
+            .menu-id {
+                font-size: 11pt;
+            }
+            .no-print { display: none; }
+        }
+
+        .stark { color: #ecb206; font-weight: bold; font-size: 0.7rem; text-transform: uppercase; }
+        .menu-id { color: #ecb206; font-weight: bold;     font-size: 13px; }
+
+        .menu-item:hover, .panel:hover { cursor: pointer; background-color: rgba(236, 178, 6, 0.1); }
+
+        .page-buttons button.active-page {
+            background-color: #2563eb !important;
+            transform: scale(1.05);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #000000;
+            border: 1px solid #ecdc06;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content h3 {
+            color: #ecb206;
+            margin: 0 0 15px 0;
+            text-align: center;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #f1faee;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .modal-input, .modal-textarea {
+            width: 100%;
+            padding: 8px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #ecb206;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .modal-input:focus, .modal-textarea:focus {
+            outline: none;
+            border-color: #ecb206;
+            box-shadow: 0 0 5px rgba(236, 178, 6, 0.3);
+        }
+
+        .modal-textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 0 1px;
+        }
+
+        .save-btn {
+            border: 1px solid #ecb206;
+            color: #ffffff;
+        }
+
+        .save-btn:hover {
+            background-color: rgba(236, 178, 6, 0.1);
+            color: #ecb206;
+        }
+
+        .add-btn {
+            border: 1px solid #ecb206;
+            color: #fff;
+        }
+        .add-btn:hover {
+            background-color: rgba(236, 178, 6, 0.1);
+            color: #ecb206;
+        }
+
+        .delete-btn {
+            border: 1px solid #ecb206;
+            color: #fff;
+        }
+        .delete-btn:hover {
+            background-color: rgba(236, 178, 6, 0.1);
+            color: #ecb206;
+        }
+
+        .heading-btn {
+            border: 1px solid #ecb206;
+            color: #fff;
+        }
+        .heading-btn:hover {
+            background-color: rgba(236, 178, 6, 0.1);
+            color: #ecb206;
+        }
+
+        .cancel-btn {
+            border: 1px solid #ecb206;
+            color: #fff;
+        }
+        .cancel-btn:hover {
+            background-color: rgba(236, 178, 6, 0.1);
+            color: #ecb206;
+        }
+
+        /* Mobile responsive design */
+        @media (max-width: 768px) {
+            .brochure-container {
+                display: block !important;
+                grid-template-columns: none !important;
+            }
+
+            .panel {
+                width: 100% !important;
+                border-right: none !important;
+                border-bottom: 1px dashed #ecb206;
+                min-height: auto;
+                padding: 20px;
+            }
+
+            .panel:last-child {
+                border-bottom: none;
+            }
+
+            h1, h2 {
+                font-size: 1.5rem !important;
+            }
+
+            .menu-item {
+                font-size: 0.8rem;
+                margin-bottom: 12px;
+            }
+
+            .item-header {
+                font-size: 17px;
+            }
+
+            .modal-buttons {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 5px;
+                margin-top: 15px;
+            }
+
+            .modal-btn {
+                padding: 8px 10px;
+                font-size: 14px;
+                min-width: 0;
+                white-space: nowrap;
+            }
+        }
+
+        /* Desktop specific styles */
+        @media (min-width: 769px) {
+            #delete-btn {
+                margin-top: 0.25rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="no-print text-center mb-4">
+        <div class="page-buttons mb-4">
+            <button onclick="showFrontPage()" id="front-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-lg transition">Framsida</button>
+            <button onclick="showBackPage()" id="back-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded shadow-lg transition ml-4">Baksida</button>
+        </div>
+        <button onclick="prepareForPrint()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded shadow-lg transition">Skriv ut / Spara som PDF</button>
+        <button onclick="resetMenuData()" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded shadow-lg transition ml-4 mt-2">Återställ meny</button>
+        <button onclick="exportMenuData()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow-lg transition ml-4 mt-2">Exportera meny</button>
+        <button onclick="importMenuData()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-lg transition ml-4 mt-2">Importera meny</button>
+        <p class="text-sm mt-2 opacity-70">Tips: Välj "Liggande" (Landscape) i utskriftsinställningarna.</p>
+        <p class="text-xs mt-1 opacity-50">💡 Klicka på menyobjekt för att redigera. Ändringar sparas automatiskt!</p>
+        <p class="text-xs mt-1 opacity-60">📁 Använd "Exportera meny" för att spara ändringar som filer som andra kan importera!</p>
+    </div>
+
+    <div id="brochure-container" class="brochure-container">
+        <!-- PANEL 1: KLASSISKA PIZZOR -->
+        <div class="panel">
+            <h2 id="pizzor">Pizzor</h2>
+            <div class="rat-p" id="pizzas-1-18">
+                <!-- Rätter genereras här -->
+            </div>
+        </div>
+
+        <!-- PANEL 2: KÖTTFÄRS + VEG + INBAKADE -->
+        <div class="panel">
+            <h2 id="kottfarspizzor">Köttfärspizzor</h2>
+            <div class="rat-p" id="kottfars-pizzas"></div>
+
+            <h2 id="vegetariska" class="mt-4">Vegetariska</h2>
+            <div class="rat-p" id="veg-pizzas"></div>
+
+            <h2 id="inbakade" class="mt-4">Inbakade</h2>
+            <div class="rat-p" id="inbakade-pizzas"></div>
+        </div>
+
+        <!-- PANEL 3: OXFILÉ & KEBAB (FRAMSIDA/BAKSIDA MIX) -->
+        <div class="panel">
+            <h2 id="oxfilepizzor">Oxfilépizzor</h2>
+            <div class="rat-p" id="oxfile-pizzas"></div>
+
+            <h2 id="kebabpizzor" class="mt-4">Kebabpizzor</h2>
+            <div class="rat-p" id="kebab-pizzas"></div>
+            
+            <div class="mt-auto pt-8 text-center border-t border-gray-700">
+                <p class="font-bold text-red-500">SMAKLIG MÅLTID!</p>
+                <p class="text-xs opacity-50">Vi reserverar oss för eventuella prisändringar.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Page Brochure Container -->
+    <div id="back-page" class="brochure-container" style="display: none;">
+        <!-- PANEL 1: FLÄSKFILÉ & KYCKLING PIZZOR -->
+        <div class="panel">
+            <h2 id="fläskfilé-kyckling-pizzor">Fläskfilé & Kyckling Pizzor</h2>
+            <div class="rat-p" id="fläskfilé-kyckling-pizzas">
+                <!-- Fläskfilé och Kyckling pizzor -->
+            </div>
+        </div>
+
+        <!-- PANEL 2: MOZZARELLA PIZZOR & KEBAB -->
+        <div class="panel">
+            <h2 id="mozzarella-kebab">Mozzarella Pizzor & Kebab</h2>
+            <div class="rat-p" id="mozzarella-kebab-content">
+                <!-- Mozzarella pizzor och Kebab -->
+            </div>
+        </div>
+
+        <!-- PANEL 3: SALLADER -->
+        <div class="panel">
+            <h2 id="sallader">Sallader</h2>
+            <div class="rat-p" id="sallader-content">
+                <!-- Sallader -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 id="modal-title">Redigera menyobjekt</h3>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modal-name">Namn:</label>
+                    <input type="text" id="modal-name" class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label for="modal-price">Pris:</label>
+                    <input type="text" id="modal-price" class="modal-input" placeholder="t.ex. 125:-">
+                </div>
+                <div class="form-group">
+                    <label for="modal-desc">Beskrivning:</label>
+                    <textarea id="modal-desc" class="modal-textarea" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="saveModalItem()" class="modal-btn save-btn">Spara</button>
+                <button onclick="addNewItem()" class="modal-btn add-btn">Lägg till ny rätt</button>
+                <button onclick="addNewHeading()" class="modal-btn heading-btn">Lägg till rubrik</button>
+                <button onclick="deleteItem()" class="modal-btn delete-btn" id="delete-btn" style="display: inline-block;">Radera rätt</button>
+                <button onclick="closeModal()" class="modal-btn cancel-btn">Avbryt</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load menu data from localStorage or use default
+        let menuData = JSON.parse(localStorage.getItem('pizzaMenuData')) || [
+
+            // Dina anpassade priser här - lägg till ändringar nedan
+            // Exempel: { id: 1, name: "Capricciosa", desc: "Tomatsås, ost, skinka, champinjoner", price: "NYTT_PRIS:-" },
+            { id: 1, name: "Capricciosa", desc: "Tomatsås, ost, skinka, champinjoner", price: "105:-" },
+            { id: 2, name: "Quattro Stagioni", desc: "Tomatsås, ost, skinka, champinjoner, kronärtskocka, räkor", price: "115:-" },
+            { id: 3, name: "Marinara", desc: "Tomatsås, ost, räkor, musslor", price: "110:-" },
+            { id: 4, name: "Margherita", desc: "Tomatsås, ost", price: "95:-" },
+            { id: 5, name: "Venezia", desc: "Tomatsås, ost, skinka, tonfisk", price: "110:-" },
+            { id: 6, name: "Tutti Pesci", desc: "Tomatsås, ost, räkor, musslor, tonfisk, krabba", price: "115:-" },
+            { id: 7, name: "Gambero", desc: "Tomatsås, ost, krabba, kräftstjärtar, vitlöksås", price: "115:-" },
+            { id: 8, name: "Vesuvio", desc: "Tomatsås, ost, paprika, skinka", price: "105:-" },
+            { id: 9, name: "Porchetta", desc: "Tomatsås, ost, skinka", price: "100:-" },
+            { id: 10, name: "Romana", desc: "Tomatsås, ost, lök, skinka", price: "105:-" },
+            { id: 11, name: "Caruso", desc: "Tomatsås, ost, bacon, lök", price: "105:-" },
+            { id: 12, name: "Primavera", desc: "Tomatsås, ost, skinka, räkor", price: "110:-" },
+            { id: 13, name: "Salami", desc: "Tomatsås, ost, salami", price: "110:-" },
+            { id: 14, name: "Salute", desc: "Tomatsås, ost, bacon, ägg", price: "110:-" },
+            { id: 15, name: "Azteca", desc: "Tomatsås, ost, skinka, green chili, jalapeno, stark sås", price: "110:-", stark: true },
+            { id: 16, name: "Regina", desc: "Tomatsås, ost, bacon, lök, champinjoner", price: "110:-" },
+            { id: 17, name: "Osole Mio", desc: "Tomatsås, ost, ananas, skinka", price: "105:-" },
+            { id: 18, name: "Vampira", desc: "Tomatsås, ost, bacon, gorgonzola, lök", price: "110:-" },
+            { id: 19, name: "Rimini", desc: "Tomatsås, ost, räkor, ananas, krabba, kräftstjärtar", price: "115:-" },
+            { id: 20, name: "Tutti Formaggi", desc: "Tomatsås, ost, fårost, mozzarella, gorgonzola", price: "110:-" },
+            
+            // Köttfärs (22-32)
+            { id: 22, name: "Mexicana", desc: "Tomatsås, ost, köttfärs, peperoni, lök, paprika", price: "110:-" },
+            { id: 23, name: "Anna", desc: "Tomatsås, ost, köttfärs, skinka, tomat, bearnaisesås", price: "110:-" },
+            { id: 24, name: "Acapulco", desc: "Tomatsås, ost, köttfärs, peperoni, paprika, jalapeno, stark sås", price: "110:-", stark: true },
+            { id: 25, name: "Brutta", desc: "Tomatsås, ost, köttfärs, bacon, skinka, paprika, tomat, bearnaisesås", price: "120:-" },
+            { id: 26, name: "Reale", desc: "Tomatsås, ost, köttfärs", price: "105:-" },
+            { id: 27, name: "Africana", desc: "Tomatsås, ost, köttfärs, banan, currysås", price: "105:-" },
+            { id: 28, name: "Milano", desc: "Tomatsås, ost, köttfärs, paprika", price: "105:-" },
+            { id: 29, name: "Cannible", desc: "Tomatsås, ost, köttfärs, skinka", price: "105:-" },
+            { id: 30, name: "Potenza", desc: "Tomatsås, ost, köttfärs, skinka, paprika", price: "110:-" },
+            { id: 31, name: "Tommaso", desc: "Tomatsås, ost, köttfärs, lök, champinjoner", price: "110:-" },
+            { id: 32, name: "Sommar", desc: "Tomatsås, ost, köttfärs, skinka, lök, champinjoner", price: "110:-" },
+
+            // Vegetariska (33-35)
+            { id: 33, name: "Fungi", desc: "Tomatsås, ost, champinjoner", price: "100:-" },
+            { id: 34, name: "Vegetariana", desc: "Tomatsås, ost, paprika, lök, champinjoner, oliver, spenat, majs", price: "110:-" },
+            { id: 35, name: "Filip", desc: "Tomatsås, ost, champinjoner, peperoni, majs, lök, tomat", price: "110:-" },
+
+            // Inbakade (36-40)
+            { id: 36, name: "Calzone", desc: "Tomatsås, ost, skinka", price: "105:-" },
+            { id: 37, name: "Bora Bora", desc: "Tomatsås, ost, skinka, ananas", price: "105:-" },
+            { id: 38, name: "Ciao", desc: "Tomatsås, ost, oxfilé, lök, bearnaisesås", price: "110:-" },
+            { id: 39, name: "Al Capone", desc: "Tomatsås, ost, skinka, gorgonzola", price: "105:-" },
+            { id: 40, name: "Iltoro", desc: "Tomatsås, ost, skinka, oxfilé, lök, champinjoner, bearnaisesås", price: "120:-" },
+
+            // Oxfilé (41-53)
+            { id: 41, name: "Il Vagbondo", desc: "Tomatsås, ost, oxfilé, ägg, bearnaisesås", price: "110:-" },
+            { id: 42, name: "Gladiator", desc: "Tomatsås, ost, oxfilé, ägg, champinjoner, bearnaisesås", price: "120:-" },
+            { id: 43, name: "Mamma Mia", desc: "Tomatsås, ost, oxfilé, skinka, ägg, bearnaisesås", price: "120:-" },
+            { id: 44, name: "Gorgonzola", desc: "Tomatsås, ost, oxfilé, ägg, gorgonzola", price: "120:-" },
+            { id: 45, name: "007", desc: "Tomatsås, ost, oxfilé, köttfärs, bacon, lök, bearnaisesås", price: "120:-" },
+            { id: 46, name: "Versillia", desc: "Tomatsås, ost, oxfilé, köttfärs, kantareller, tomat, bearnaisesås", price: "120:-" },
+            { id: 47, name: "Stenio", desc: "Tomatsås, ost, oxfilé, kronärtskocka, paprika, tomat, bearnaisesås", price: "120:-" },
+            { id: 48, name: "Bella", desc: "Tomatsås, ost, oxfilé, köttfärs, tomat, paprika", price: "120:-" },
+            { id: 49, name: "Mafiosa", desc: "Tomatsås, ost, oxfilé, skinka, köttfärs, banan, gorgonzola", price: "120:-" },
+            { id: 50, name: "Alfa", desc: "Tomatsås, ost, oxfilé, green chili, jalapeno, lök, vitlöksås", price: "120:-", stark: true },
+            { id: 51, name: "008", desc: "Tomatsås, ost, oxfilé, skinka, köttfärs, ananas, banan, gorgonzola, bearnaisesås", price: "130:-" },
+            { id: 52, name: "UFO", desc: "Tomatsås, ost, oxfilé, skinka, köttfärs, champinjoner, extra ost", price: "130:-" },
+            { id: 53, name: "Imperiale", desc: "Tomatsås, ost, oxfilé, skinka, fläskfilé, köttfärs, bacon, vitlöksås", price: "130:-" },
+
+            // Kebab (54-56)
+            { id: 54, name: "Kebo", desc: "Tomatsås, ost, kebabkött, champinjoner, lök, peperoni, paprika, tomat", price: "115:-" },
+            { id: 55, name: "Polo", desc: "Tomatsås, ost, kebabkött, green chili, lök, jalapeno, paprika, tomat", price: "115:-" },
+            { id: 56, name: "Tropical Special", desc: "Tomatsås, ost, kebabkött, gurka, isbergssallad, paprika, tomat", price: "115:-" },
+
+            // Fläskfilé Pizzor (57-59)
+            { id: 57, name: "Parma", desc: "Tomatsås, ost, fläskfilé, bacon, köttfärs, vitlöksås", price: "120:-" },
+            { id: 58, name: "Lazio", desc: "Tomatsås, ost, fläskfilé, skinka, banan, jordnötter, curry", price: "120:-" },
+            { id: 59, name: "Inter", desc: "Tomatsås, ost, fläskfilé, lök, ägg, tomat, bearnaisesås", price: "120:-" },
+
+            // Kyckling Pizzor (60-64)
+            { id: 60, name: "Coccodé", desc: "Tomatsås, ost, kyckling, bearnaisesås", price: "105:-" },
+            { id: 61, name: "Pazza", desc: "Tomatsås, ost, kyckling, lök, paprika, champinjoner", price: "110:-" },
+            { id: 62, name: "Indiana", desc: "Tomatsås, ost, kyckling, banan, ananas, jordnötter, curry", price: "110:-" },
+            { id: 63, name: "Bomba", desc: "Tomatsås, ost, kyckling, köttfärs, lök, champinjoner, curry", price: "115:-" },
+            { id: 64, name: "Napoli", desc: "Tomatsås, ost, kyckling, paprika, banan, jalapeno, curry", price: "110:-" },
+
+            // Mozzarella Pizzor (65-67)
+            { id: 65, name: "Camilla", desc: "Tomatsås, ost, mozzarella, oxfilé, champinjoner, tomat, vitlöksås", price: "115:-" },
+            { id: 66, name: "Jasemin", desc: "Tomatsås, ost, mozzarella, kyckling, champinjoner, tomat, basilika, olivolja", price: "115:-" },
+            { id: 67, name: "Goliat", desc: "Tomatsås, ost, mozzarella, kantareller, tomat, kronärtskocka, bearnaisesås", price: "115:-" },
+
+            // Kebab (68-71)
+            { id: 68, name: "Kebabrulle", desc: "Nybakat bröd, kebabkött, valfri sås", price: "95:-" },
+            { id: 69, name: "Kycklingrulle", desc: "Nybakat bröd, kyckling, valfri sås", price: "95:-" },
+            { id: 70, name: "Kebabtallrik", desc: "Kebab eller kyckling, pommes, valfri sås", price: "100:-" },
+            { id: 71, name: "Falafel", desc: "Serveras med pommes, valfri sås, sallad", price: "90:-" },
+
+            // Sallader (72-80)
+            { id: 72, name: "Amerikansk", desc: "Skinka, ost", price: "95:-" },
+            { id: 73, name: "Tonfisksallad", desc: "Tonfisk, kronärtskocka, oliver", price: "95:-" },
+            { id: 74, name: "Kycklingsallad", desc: "Kyckling", price: "95:-" },
+            { id: 75, name: "Hawaiisallad", desc: "Skinka, tonfisk, ananas", price: "95:-" },
+            { id: 76, name: "Skaldjursallad", desc: "Räkor, kräftstjärtar", price: "95:-" },
+            { id: 77, name: "Räksallad", desc: "Räkor, skinka, ost", price: "95:-" },
+            { id: 78, name: "Bohussallad", desc: "Räkor, ananas, banan, kräftstjärtar", price: "100:-" },
+            { id: 79, name: "Grekisksallad", desc: "Oliver, fårost, kronärtskocka", price: "100:-" },
+            { id: 80, name: "Kebabsallad", desc: "Kebabkött", price: "95:-" },
+
+            // Extra rätt under Pizzor & Köttfärs (21)
+            { id: 21, name: "Ny Special", desc: "Tomatsås, ost, skinka, champinjoner, paprika, lök", price: "110:-" }
+        ];
+
+        // Heading data structure
+        let headingsData = JSON.parse(localStorage.getItem('headingsData')) || [];
+
+        // Function to save menu data to localStorage
+        function saveMenuData() {
+            localStorage.setItem('pizzaMenuData', JSON.stringify(menuData));
+        }
+
+        function saveHeadingsData() {
+            localStorage.setItem('headingsData', JSON.stringify(headingsData));
+        }
+
+        function loadHeadings() {
+            headingsData.forEach(heading => {
+                // Create h2 element with proper styling
+                const h2Element = document.createElement('h2');
+                h2Element.textContent = heading.text;
+                h2Element.style.fontFamily = "'Oswald', sans-serif";
+                h2Element.style.textTransform = "uppercase";
+                h2Element.style.color = "#ecb206";
+                h2Element.style.borderBottom = "none";
+                h2Element.style.marginBottom = "15px";
+                h2Element.style.paddingBottom = "5px";
+                h2Element.style.fontSize = "1.7rem";
+                h2Element.style.fontStyle = "italic";
+                h2Element.style.position = "relative";
+                h2Element.style.cursor = "pointer";
+
+                // Add click handler for editing the heading
+                h2Element.addEventListener('click', function() {
+                    editH2(h2Element);
+                });
+
+                // Add to the appropriate page and panel
+                if (heading.page === 'back') {
+                    const backPage = document.getElementById('back-page');
+                    const backPanels = backPage.querySelectorAll('.panel');
+                    if (backPanels.length > heading.panelIndex) {
+                        backPanels[heading.panelIndex].appendChild(h2Element);
+                    }
+                } else {
+                    const frontPage = document.getElementById('brochure-container');
+                    const frontPanels = frontPage.querySelectorAll('.panel');
+                    if (frontPanels.length > heading.panelIndex) {
+                        frontPanels[heading.panelIndex].appendChild(h2Element);
+                    }
+                }
+            });
+        }
+
+        // Function to export menu data
+        function exportMenuData() {
+            const exportData = {
+                menuData: menuData,
+                headingsData: headingsData,
+                h2Headings: JSON.parse(localStorage.getItem('h2Headings') || '{}'),
+                backPanelContent: JSON.parse(localStorage.getItem('backPanelContent') || '{}'),
+                timestamp: new Date().toISOString()
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'pizza-menu-data.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert('Menydata exporterad! Skicka filen till andra personer.');
+        }
+
+        // Function to import menu data
+        function importMenuData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const importData = JSON.parse(e.target.result);
+
+                            if (confirm('Vill du importera menydata? Detta kommer ersätta nuvarande data.')) {
+                                // Import menu data
+                                if (importData.menuData) {
+                                    localStorage.setItem('pizzaMenuData', JSON.stringify(importData.menuData));
+                                }
+
+                                // Import headings
+                                if (importData.headingsData) {
+                                    localStorage.setItem('headingsData', JSON.stringify(importData.headingsData));
+                                }
+
+                                // Import h2 headings
+                                if (importData.h2Headings) {
+                                    localStorage.setItem('h2Headings', JSON.stringify(importData.h2Headings));
+                                }
+
+                                // Import back panel content
+                                if (importData.backPanelContent) {
+                                    localStorage.setItem('backPanelContent', JSON.stringify(importData.backPanelContent));
+                                }
+
+                                alert('Menydata importerad! Ladda om sidan för att se ändringarna.');
+                                location.reload();
+                            }
+                        } catch (error) {
+                            alert('Fel: Ogiltig datafil. ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        // Function to reset menu data to original
+        function resetMenuData() {
+            if (confirm('Är du säker på att du vill återställa menyn till originalet? Alla ändringar kommer att förloras.')) {
+                localStorage.removeItem('pizzaMenuData');
+                localStorage.removeItem('h2Headings');
+                localStorage.removeItem('backPanelContent');
+                localStorage.removeItem('headingsData');
+                location.reload(); // Reload to get original data
+            }
+        }
+
+        // Functions for back panel content
+        function saveBackPanelContent(panelId, content) {
+            const backPanelData = JSON.parse(localStorage.getItem('backPanelContent') || '{}');
+            backPanelData[panelId] = content;
+            localStorage.setItem('backPanelContent', JSON.stringify(backPanelData));
+        }
+
+        function loadBackPanelContent() {
+            const backPanelData = JSON.parse(localStorage.getItem('backPanelContent') || '{}');
+            Object.keys(backPanelData).forEach(panelId => {
+                const contentElement = document.getElementById(panelId);
+                if (contentElement && backPanelData[panelId]) {
+                    contentElement.innerHTML = '';
+                    const paragraphs = backPanelData[panelId].split('\n').filter(p => p.trim());
+                    paragraphs.forEach(paragraph => {
+                        const p = document.createElement('p');
+                        p.textContent = paragraph.trim();
+                        p.style.marginBottom = '8px';
+                        contentElement.appendChild(p);
+                    });
+                }
+            });
+        }
+
+        function createItem(item) {
+            return `
+                <div class="menu-item" onclick="editItem(${item.id})">
+                    <div class="item-header">
+                        <span><span class="menu-id">${item.id}.</span> <span class="item-name">${item.name}</span> ${item.stark ? '<span class="stark">(Stark)</span>' : ''}</span>
+                        <span class="price">${item.price}</span>
+                    </div>
+                    <div class="ingredients">${item.desc}</div>
+                </div>
+            `;
+        }
+
+        const render = () => {
+            console.log('Rendering menu, total items:', menuData.length);
+
+            const p1 = document.getElementById('pizzas-1-18');
+            const kott = document.getElementById('kottfars-pizzas');
+            const veg = document.getElementById('veg-pizzas');
+            const inbakade = document.getElementById('inbakade-pizzas');
+            const ox = document.getElementById('oxfile-pizzas');
+            const kebab = document.getElementById('kebab-pizzas');
+
+            // Back page containers
+            const fläskfiléKyckling = document.getElementById('fläskfilé-kyckling-pizzas');
+            const mozzarellaKebab = document.getElementById('mozzarella-kebab-content');
+            const sallader = document.getElementById('sallader-content');
+
+            // Clear all containers first
+            p1.innerHTML = '';
+            kott.innerHTML = '';
+            veg.innerHTML = '';
+            inbakade.innerHTML = '';
+            ox.innerHTML = '';
+            kebab.innerHTML = '';
+
+            // Clear back page containers
+            if (fläskfiléKyckling) fläskfiléKyckling.innerHTML = '';
+            if (mozzarellaKebab) mozzarellaKebab.innerHTML = '';
+            if (sallader) sallader.innerHTML = '';
+
+            let pizzaCounter = 0;
+            menuData.forEach(item => {
+                console.log('Rendering item:', item.id, item.name);
+                const html = createItem(item);
+                if (item.id <= 21) {
+                    // Pizzor 1-21 i första panelen
+                    if (item.id === 19) {
+                        // Lägg till rubrik innan pizza 19
+                        p1.innerHTML += '<h2 id="pizzor-kottfars" style="margin-top: 20px; margin-bottom: 10px;">Pizzor & Köttfärs</h2>';
+                    }
+                    p1.innerHTML += html;
+                }
+                else if (item.id <= 32) kott.innerHTML += html;
+                else if (item.id <= 35) veg.innerHTML += html;
+                else if (item.id <= 40) inbakade.innerHTML += html;
+                else if (item.id <= 53) ox.innerHTML += html;
+                else if (item.id <= 56) kebab.innerHTML += html;
+                else if (item.id <= 64 && fläskfiléKyckling) {
+                    // Fläskfilé och Kyckling pizzor (57-64)
+                    fläskfiléKyckling.innerHTML += html;
+                }
+                else if (item.id <= 71 && mozzarellaKebab) {
+                    // Mozzarella pizzor och Kebab (65-71)
+                    mozzarellaKebab.innerHTML += html;
+                }
+                else if (item.id <= 80 && sallader) {
+                    // Sallader (72-80)
+                    sallader.innerHTML += html;
+                }
+            });
+        };
+
+        let currentlyEditingId = null;
+        let isAddingNew = false;
+        let currentlyAddingHeading = false;
+        let currentlyEditingHeading = false;
+
+        function clearModalFields() {
+            document.getElementById('modal-title').textContent = 'Lägg till ny rätt';
+            document.getElementById('modal-name').value = '';
+            document.getElementById('modal-price').value = '';
+            document.getElementById('modal-desc').value = '';
+        }
+
+        function editItem(itemId) {
+            const item = menuData.find(i => i.id === itemId);
+            if (!item) return;
+
+            currentlyEditingId = itemId;
+            isAddingNew = false;
+
+            // Clear any inline styles from previous uses
+            clearModalInlineStyles();
+
+            // Show all modal fields
+            const nameField = document.getElementById('modal-name');
+            const priceField = document.getElementById('modal-price');
+            const nameGroup = nameField.parentElement;
+            const priceGroup = priceField.parentElement;
+
+            nameGroup.classList.remove('hidden');
+            priceGroup.classList.remove('hidden');
+
+            // Fill modal with current data
+            document.getElementById('modal-title').textContent = `Redigera ${item.name}`;
+            document.getElementById('modal-name').value = item.name;
+            document.getElementById('modal-price').value = item.price;
+            document.getElementById('modal-desc').value = item.desc;
+
+            // Show delete button
+            document.getElementById('delete-btn').style.display = 'inline-block';
+
+            // Show modal
+            document.getElementById('edit-modal').style.display = 'flex';
+
+            // Focus on name input
+            document.getElementById('modal-name').focus();
+        }
+
+        function addNewItem() {
+            currentlyEditingId = null;
+            isAddingNew = true;
+
+            // Clear any inline styles from previous uses
+            clearModalInlineStyles();
+
+            // Ensure all modal fields are visible for adding new items
+            const nameField = document.getElementById('modal-name');
+            const priceField = document.getElementById('modal-price');
+            const nameGroup = nameField.parentElement;
+            const priceGroup = priceField.parentElement;
+
+            // Force remove hidden class and any inline styles
+            nameGroup.classList.remove('hidden');
+            priceGroup.classList.remove('hidden');
+            nameGroup.style.display = '';
+            priceGroup.style.display = '';
+
+            // Clear modal for new item
+            clearModalFields();
+
+            // Hide delete button for new items
+            document.getElementById('delete-btn').style.display = 'none';
+
+            // Show modal
+            document.getElementById('edit-modal').style.display = 'flex';
+
+            // Focus on name input
+            document.getElementById('modal-name').focus();
+        }
+
+        function addNewHeading() {
+            // Clear modal for new heading
+            clearModalFields();
+            document.getElementById('modal-title').textContent = 'Lägg till ny rubrik';
+
+            // Hide price field for headings
+            document.getElementById('modal-price').parentElement.style.display = 'none';
+            document.getElementById('modal-desc').parentElement.style.display = 'none';
+
+            // Show name field for heading text
+            document.getElementById('modal-name').parentElement.style.display = '';
+            document.getElementById('modal-name').placeholder = 'Rubrik text';
+
+            // Hide delete button for new headings
+            document.getElementById('delete-btn').style.display = 'none';
+
+            // Store that we're adding a heading
+            currentlyAddingHeading = true;
+
+            // Show modal
+            document.getElementById('edit-modal').style.display = 'flex';
+
+            // Focus on name input
+            document.getElementById('modal-name').focus();
+        }
+
+        function saveItem(itemId, event) {
+            event.stopPropagation(); // Prevent triggering edit mode again
+
+            const item = menuData.find(i => i.id === itemId);
+            if (!item) return;
+
+            const newName = document.getElementById(`edit-name-${itemId}`).value;
+            const newPrice = document.getElementById(`edit-price-${itemId}`).value;
+            const newDesc = document.getElementById(`edit-desc-${itemId}`).value;
+
+            // Update the data
+            item.name = newName;
+            item.price = newPrice;
+            item.desc = newDesc;
+
+            // Save to localStorage
+            saveMenuData();
+
+            // Clear editing state
+            currentlyEditingId = null;
+
+            // Re-render only this specific item instead of entire menu
+            updateSingleItem(itemId);
+        }
+
+        function saveModalItem() {
+            console.log('saveModalItem called, isAddingNew:', isAddingNew, 'currentlyAddingHeading:', currentlyAddingHeading);
+
+            if (currentlyAddingHeading) {
+                // Handle heading creation
+                const headingText = document.getElementById('modal-name').value.trim();
+
+                if (!headingText) {
+                    alert('Rubrik text är obligatorisk!');
+                    return;
+                }
+
+                // Create h2 element with proper styling
+                const h2Element = document.createElement('h2');
+                h2Element.textContent = headingText;
+                h2Element.style.fontFamily = "'Oswald', sans-serif";
+                h2Element.style.textTransform = "uppercase";
+                h2Element.style.color = "#ecb206";
+                h2Element.style.borderBottom = "none";
+                h2Element.style.marginBottom = "15px";
+                h2Element.style.paddingBottom = "5px";
+                h2Element.style.fontSize = "1.7rem !important";
+                h2Element.style.fontStyle = "italic";
+                h2Element.style.position = "relative";
+                h2Element.style.cursor = "pointer";
+
+                // Add the pseudo-element styling via a style tag
+                const style = document.createElement('style');
+                style.textContent = `
+                    h2::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 1px;
+                        background: linear-gradient(to right, #ecb20669 0%, #ecb20669 70%, rgba(236, 178, 6, 0.3) 85%, transparent 100%);
+                    }
+                    h2:hover {
+                        color: #ffd700;
+                    }
+                `;
+                document.head.appendChild(style);
+
+                // Add click handler for editing the heading
+                h2Element.addEventListener('click', function() {
+                    editH2(h2Element);
+                });
+
+                // Determine which page is active
+                const backPage = document.getElementById('back-page');
+                const frontPage = document.getElementById('brochure-container');
+                let targetPage = 'front';
+                let targetPanelIndex = 0;
+
+                if (backPage.style.display !== 'none') {
+                    targetPage = 'back';
+                }
+
+                // Add the heading to the current active panel
+                if (targetPage === 'back') {
+                    const backPanels = backPage.querySelectorAll('.panel');
+                    if (backPanels.length > 0) {
+                        backPanels[0].appendChild(h2Element);
+                    }
+                } else {
+                    const frontPanels = frontPage.querySelectorAll('.panel');
+                    if (frontPanels.length > 0) {
+                        frontPanels[0].appendChild(h2Element);
+                    }
+                }
+
+                // Save heading to data
+                const headingData = {
+                    id: Date.now(), // Unique ID based on timestamp
+                    text: headingText,
+                    page: targetPage,
+                    panelIndex: targetPanelIndex
+                };
+                headingsData.push(headingData);
+                saveHeadingsData();
+
+                // Reset modal state
+                currentlyAddingHeading = false;
+
+                // Close modal
+                document.getElementById('edit-modal').style.display = 'none';
+            } else if (currentlyEditingHeading && currentlyEditingH2) {
+                // Handle heading editing
+                const newHeadingText = document.getElementById('modal-name').value.trim();
+
+                if (!newHeadingText) {
+                    alert('Rubrik text är obligatorisk!');
+                    return;
+                }
+
+                // Update the heading text
+                const oldText = currentlyEditingH2.textContent;
+                currentlyEditingH2.textContent = newHeadingText;
+
+                // Update headingsData
+                const headingIndex = headingsData.findIndex(h => h.text === oldText);
+                if (headingIndex !== -1) {
+                    headingsData[headingIndex].text = newHeadingText;
+                    saveHeadingsData();
+                } else {
+                    // Handle original h2 headings (like "Pizzor", "Köttfärspizzor", etc.)
+                    saveH2Changes(currentlyEditingH2.id || currentlyEditingH2.textContent.replace(/\s+/g, '_').toLowerCase(), newHeadingText);
+                }
+
+                // Reset modal state
+                currentlyEditingHeading = false;
+                currentlyEditingH2 = null;
+
+                // Close modal
+                document.getElementById('edit-modal').style.display = 'none';
+
+                return;
+            }
+
+            // Handle menu items
+            const newName = document.getElementById('modal-name').value.trim();
+            const newPrice = document.getElementById('modal-price').value;
+            const newDesc = document.getElementById('modal-desc').value.trim();
+
+            console.log('Form values - Name:', newName, 'Price:', newPrice, 'Desc:', newDesc);
+            console.log('isAddingNew:', isAddingNew);
+
+            if (!newName || !newPrice) {
+                console.error('Validation failed - Name:', newName, 'Price:', newPrice);
+                alert('Namn och pris är obligatoriska!');
+                return;
+            }
+
+            if (isAddingNew) {
+                // Add new item
+                const newId = Math.max(...menuData.map(item => item.id)) + 1;
+                const newItem = {
+                    id: newId,
+                    name: newName,
+                    price: newPrice,
+                    desc: newDesc
+                };
+                menuData.push(newItem);
+                console.log('Added new item:', newItem); // Debug
+            } else {
+                // Update existing item
+                const item = menuData.find(i => i.id === currentlyEditingId);
+                if (!item) return;
+
+                item.name = newName;
+                item.price = newPrice;
+                item.desc = newDesc;
+            }
+
+            // Save to localStorage
+            saveMenuData();
+
+            // Re-render the menu to show changes
+            render();
+
+            // Reset modal fields and close
+            const nameField = document.getElementById('modal-name');
+            const priceField = document.getElementById('modal-price');
+            const nameGroup = nameField.parentElement;
+            const priceGroup = priceField.parentElement;
+
+            nameGroup.classList.remove('hidden');
+            priceGroup.classList.remove('hidden');
+            nameField.value = '';
+            priceField.value = '';
+            document.getElementById('modal-desc').value = '';
+            currentlyEditingId = null;
+            isAddingNew = false;
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        function deleteItem() {
+            if (currentlyEditingHeading && currentlyEditingH2) {
+                // Delete heading
+                if (confirm('Är du säker på att du vill ta bort denna rubrik?')) {
+                    const headingText = currentlyEditingH2.textContent;
+                    deleteHeading(headingText);
+                    currentlyEditingH2.remove();
+
+                    // Reset modal state
+                    currentlyEditingHeading = false;
+                    currentlyEditingH2 = null;
+
+                    // Close modal
+                    document.getElementById('edit-modal').style.display = 'none';
+                }
+            } else if (currentlyEditingId === null || isAddingNew) {
+                return;
+            } else {
+                // Delete menu item
+                if (confirm('Är du säker på att du vill radera denna rätt?')) {
+                    // Remove the item
+                    menuData = menuData.filter(item => item.id !== currentlyEditingId);
+
+                    // Reorder IDs to fill gaps
+                    menuData.forEach((item, index) => {
+                        item.id = index + 1;
+                    });
+
+                    // Save to localStorage
+                    saveMenuData();
+
+                    // Close modal and re-render
+                    closeModal();
+                    render();
+                }
+            }
+        }
+
+        function closeModal() {
+            currentlyEditingId = null;
+            isAddingNew = false;
+            currentlyAddingHeading = false;
+            currentlyEditingHeading = false;
+            currentlyEditingH2 = null;
+            document.getElementById('delete-btn').style.display = 'none';
+
+            // Clear any inline styles
+            clearModalInlineStyles();
+
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('edit-modal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        });
+
+        // Auto-format price input to add ":-"
+        document.getElementById('modal-price').addEventListener('input', function(event) {
+            let value = event.target.value;
+            // Remove any existing ":-" and non-numeric characters except digits
+            value = value.replace(/[^\d]/g, '');
+            // Add ":-" if there's a value
+            if (value) {
+                event.target.value = value + ':-';
+            }
+        });
+
+        // Back page now displays menu items directly - no panel editing needed
+
+        function clearModalInlineStyles() {
+            // Remove any inline display styles from modal form groups
+            const formGroups = document.querySelectorAll('#edit-modal .form-group');
+            formGroups.forEach(group => {
+                group.style.removeProperty('display');
+            });
+        }
+
+        // Handle heading deletion (when h2 is removed)
+        function deleteHeading(headingText) {
+            headingsData = headingsData.filter(h => h.text !== headingText);
+            saveHeadingsData();
+        }
+
+        // Handle h2 editing
+        let currentlyEditingH2 = null;
+
+        document.addEventListener('click', function(event) {
+            if (event.target.tagName === 'H2' && !currentlyEditingId && document.getElementById('edit-modal').style.display !== 'flex') {
+                editH2(event.target);
+            }
+        });
+
+        function editH2(h2Element) {
+            if (currentlyEditingH2) return;
+
+            currentlyEditingH2 = h2Element;
+
+            // Clear modal for heading editing
+            clearModalFields();
+            document.getElementById('modal-title').textContent = 'Redigera rubrik';
+
+            // Hide price and description fields for headings
+            document.getElementById('modal-price').parentElement.style.display = 'none';
+            document.getElementById('modal-desc').parentElement.style.display = 'none';
+
+            // Show name field for heading text
+            document.getElementById('modal-name').parentElement.style.display = '';
+            document.getElementById('modal-name').value = h2Element.textContent;
+            document.getElementById('modal-name').placeholder = 'Rubrik text';
+
+            // Show delete button for headings
+            document.getElementById('delete-btn').style.display = 'inline-block';
+            document.getElementById('delete-btn').textContent = 'Radera rubrik';
+
+            // Set editing mode to heading
+            currentlyEditingHeading = true;
+            currentlyEditingH2 = h2Element;
+
+            // Show modal
+            document.getElementById('edit-modal').style.display = 'flex';
+
+            // Focus on name input
+            document.getElementById('modal-name').focus();
+        }
+
+
+        function saveH2Changes(h2Id, newText) {
+            const h2Data = JSON.parse(localStorage.getItem('h2Headings') || '{}');
+            h2Data[h2Id] = newText;
+            localStorage.setItem('h2Headings', JSON.stringify(h2Data));
+        }
+
+        // Load saved h2 headings
+        function loadH2Headings() {
+            const h2Data = JSON.parse(localStorage.getItem('h2Headings') || '{}');
+            const h2Elements = document.querySelectorAll('h2');
+
+            h2Elements.forEach(h2 => {
+                if (h2.id && h2Data[h2.id]) {
+                    h2.textContent = h2Data[h2.id];
+                }
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && document.getElementById('edit-modal').style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // Page switching functions
+        function showFrontPage() {
+            document.getElementById('brochure-container').style.display = 'grid';
+            document.getElementById('back-page').style.display = 'none';
+            document.getElementById('front-btn').classList.add('active-page');
+            document.getElementById('back-btn').classList.remove('active-page');
+        }
+
+        function showBackPage() {
+            document.getElementById('brochure-container').style.display = 'none';
+            document.getElementById('back-page').style.display = 'grid';
+            document.getElementById('front-btn').classList.remove('active-page');
+            document.getElementById('back-btn').classList.add('active-page');
+            render(); // Render menu items on back page
+        }
+
+        function prepareForPrint() {
+            // Hide all control elements
+            document.querySelector('.no-print').style.display = 'none';
+
+            // Hide the modal if it's open
+            document.getElementById('edit-modal').style.display = 'none';
+
+            // Trigger print (print whichever page is currently visible)
+            window.print();
+
+            // Restore original view after printing (with a small delay)
+            setTimeout(function() {
+                document.querySelector('.no-print').style.display = 'block';
+            }, 1000);
+        }
+
+        window.onload = function() {
+            render();
+            loadH2Headings();
+            loadBackPanelContent();
+            loadHeadings();
+            showFrontPage(); // Start with front page
+        };
+    </script>
+</body>
+</html>
