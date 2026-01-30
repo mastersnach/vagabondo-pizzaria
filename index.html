@@ -516,15 +516,26 @@
                 <button onclick="addNewItem()" class="modal-btn add-btn">Lägg till ny rätt</button>
                 <button onclick="addNewHeading()" class="modal-btn heading-btn">Lägg till rubrik</button>
                 <button onclick="deleteItem()" class="modal-btn delete-btn" id="delete-btn" style="display: inline-block;">Radera rätt permanent</button>
-                <button onclick="restoreDeletedItems()" class="modal-btn" style="background-color: #28a745; color: white; display: none;" id="restore-btn">Återställ raderade</button>
                 <button onclick="closeModal()" class="modal-btn cancel-btn">Avbryt</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Load menu data from localStorage or use default
-        let menuData = JSON.parse(localStorage.getItem('pizzaMenuData')) || [
+        // Load menu data from localStorage ONLY - never fall back to hardcoded data
+        let menuData = [];
+        const savedMenuData = localStorage.getItem('pizzaMenuData');
+        if (savedMenuData && savedMenuData !== 'null' && savedMenuData !== 'undefined') {
+            try {
+                menuData = JSON.parse(savedMenuData);
+                console.log('Loaded menuData from localStorage:', menuData.length, 'items');
+            } catch (e) {
+                console.error('Failed to parse menuData from localStorage:', e);
+                menuData = [];
+            }
+        } else {
+            // First time - use default menu data
+            menuData = [
 
             // Dina anpassade priser här - lägg till ändringar nedan
             // Exempel: { id: 1, name: "Capricciosa", desc: "Tomatsås, ost, skinka, champinjoner", price: "NYTT_PRIS:-" },
@@ -630,10 +641,23 @@
 
             // Extra rätt under Pizzor & Köttfärs (21)
             { id: 21, name: "Ny Special", desc: "Tomatsås, ost, skinka, champinjoner, paprika, lök", price: "110:-" }
-        ];
+            ];
+            // Save initial data to localStorage so future loads use this instead of hardcoded data
+            localStorage.setItem('pizzaMenuData', JSON.stringify(menuData));
+            console.log('Saved initial menuData to localStorage');
+        }
 
-        // Heading data structure
-        let headingsData = JSON.parse(localStorage.getItem('headingsData')) || [];
+        // Heading data structure - load from localStorage only
+        let headingsData = [];
+        const savedHeadingsData = localStorage.getItem('headingsData');
+        if (savedHeadingsData && savedHeadingsData !== 'null' && savedHeadingsData !== 'undefined') {
+            try {
+                headingsData = JSON.parse(savedHeadingsData);
+            } catch (e) {
+                console.error('Failed to parse headingsData from localStorage:', e);
+                headingsData = [];
+            }
+        }
 
         // Function to save menu data to localStorage
         function saveMenuData() {
@@ -645,9 +669,8 @@
         }
 
         function loadHeadings() {
-            // Filter out deleted headings
-            const activeHeadings = headingsData.filter(heading => !heading.deleted);
-            activeHeadings.forEach(heading => {
+            // Load all headings (no deleted headings exist)
+            headingsData.forEach(heading => {
                 // Create h2 element with proper styling
                 const h2Element = document.createElement('h2');
                 h2Element.textContent = heading.text;
@@ -686,12 +709,10 @@
 
         // Function to export menu data
         function exportMenuData() {
-            // Only export non-deleted items and headings
-            const activeMenuData = menuData.filter(item => !item.deleted);
-            const activeHeadingsData = headingsData.filter(heading => !heading.deleted);
+            // Export all current data (no deleted items exist)
             const exportData = {
-                menuData: activeMenuData,
-                headingsData: activeHeadingsData,
+                menuData: menuData,
+                headingsData: headingsData,
                 h2Headings: JSON.parse(localStorage.getItem('h2Headings') || '{}'),
                 backPanelContent: JSON.parse(localStorage.getItem('backPanelContent') || '{}'),
                 timestamp: new Date().toISOString()
@@ -833,11 +854,8 @@
             if (sallader) sallader.innerHTML = '';
 
             let pizzaCounter = 0;
-            // Filter out deleted items before rendering
-            const activeMenuData = menuData.filter(item => !item.deleted);
-            console.log('Rendering active items:', activeMenuData.length, 'of', menuData.length, 'total');
-            console.log('Deleted items not shown:', menuData.filter(item => item.deleted));
-            activeMenuData.forEach(item => {
+            // Render all items
+            menuData.forEach(item => {
                 console.log('Rendering item:', item.id, item.name);
                 const html = createItem(item);
                 if (item.id <= 21) {
@@ -907,18 +925,6 @@
 
             // Show delete button
             document.getElementById('delete-btn').style.display = 'inline-block';
-
-            // Show restore button if there are deleted items or headings
-            const deletedItemsCount = menuData.filter(item => item.deleted).length;
-            const deletedHeadingsCount = headingsData.filter(heading => heading.deleted).length;
-            const totalDeleted = deletedItemsCount + deletedHeadingsCount;
-            const restoreBtn = document.getElementById('restore-btn');
-            if (totalDeleted > 0) {
-                restoreBtn.style.display = 'inline-block';
-                restoreBtn.textContent = `Återställ ${totalDeleted} raderade`;
-            } else {
-                restoreBtn.style.display = 'none';
-            }
 
             // Show modal
             document.getElementById('edit-modal').style.display = 'flex';
@@ -1209,21 +1215,15 @@
             } else {
                 // Delete menu item PERMANENTLY
                 if (confirm('Är du säker på att du vill radera denna rätt? Detta går inte att ångra!')) {
-                    // Mark item as deleted instead of removing it
+                    // Remove item completely from array
                     const itemIndex = menuData.findIndex(item => item.id === currentlyEditingId);
                     if (itemIndex !== -1) {
-                        menuData[itemIndex].deleted = true; // Mark as deleted
-                        console.log('Marked item as deleted:', menuData[itemIndex]);
-                        console.log('All menuData:', menuData);
+                        menuData.splice(itemIndex, 1);
 
-                        // Save to localStorage (deleted items stay saved)
+                        // Save updated array to localStorage
                         saveMenuData();
 
-                        // Verify localStorage was saved
-                        const savedData = JSON.parse(localStorage.getItem('pizzaMenuData'));
-                        console.log('Saved to localStorage:', savedData);
-
-                        // Re-render to hide deleted item
+                        // Re-render menu
                         render();
 
                         // Success message
@@ -1237,43 +1237,7 @@
             }
         }
 
-        function restoreDeletedItems() {
-            const deletedItems = menuData.filter(item => item.deleted);
-            const deletedHeadings = headingsData.filter(heading => heading.deleted);
-            const totalDeleted = deletedItems.length + deletedHeadings.length;
-
-            if (totalDeleted === 0) {
-                alert('Inga raderade rätten eller rubriker att återställa.');
-                return;
-            }
-
-            let message = 'Vill du återställa:';
-            if (deletedItems.length > 0) message += `\n- ${deletedItems.length} raderade rätt(er)`;
-            if (deletedHeadings.length > 0) message += `\n- ${deletedHeadings.length} raderade rubrik(er)`;
-
-            if (confirm(message + '?')) {
-                // Remove deleted flag from all deleted items
-                menuData.forEach(item => {
-                    if (item.deleted) {
-                        delete item.deleted;
-                    }
-                });
-
-                // Remove deleted flag from all deleted headings
-                headingsData.forEach(heading => {
-                    if (heading.deleted) {
-                        delete heading.deleted;
-                    }
-                });
-
-                saveMenuData();
-                saveHeadingsData();
-                render();
-                loadHeadings();
-                alert('Raderade rätten och rubriker har återställts!');
-                closeModal();
-            }
-        }
+        // No restore function needed - deletions are permanent
 
         function closeModal() {
             currentlyEditingId = null;
@@ -1319,10 +1283,10 @@
 
         // Handle heading deletion (when h2 is removed)
         function deleteHeading(headingText) {
-            // Mark heading as deleted instead of removing it
+            // Remove heading completely
             const headingIndex = headingsData.findIndex(h => h.text === headingText);
             if (headingIndex !== -1) {
-                headingsData[headingIndex].deleted = true;
+                headingsData.splice(headingIndex, 1);
                 saveHeadingsData();
             }
         }
@@ -1428,8 +1392,6 @@
         }
 
         window.onload = function() {
-            console.log('Page loaded. Current menuData:', menuData);
-            console.log('Deleted items:', menuData.filter(item => item.deleted));
             render();
             loadH2Headings();
             loadBackPanelContent();
